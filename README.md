@@ -20,7 +20,7 @@ Related software:
 **Arduino**:
 
 * Download the latest version of Arduino from https://www.arduino.cc
-* From `Tools > Manage Libraries...` add the library: `Sensirion I2C SCD4x`
+* Clone the [DFRobot_Geiger](https://github.com/cdjq/DFRobot_Geiger) library to `~/Documents/Arduino/libraries/`
 * Connect your ESP32 via USB
 * From `Tools > Board` choose your ESP32 board, port, and speed: `115200`
 * Now try `Upload` to send the code to your ESP32
