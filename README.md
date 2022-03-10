@@ -4,7 +4,7 @@ An Arduino sketch for the [DF Robot Gravity Geiger Counter SEN0463 sensor](https
 
 Based on [DFRobot_Geiger](https://github.com/cdjq/DFRobot_Geiger)
 
-![The DF Robot Gravity Geiger Counter SEN0463 sensor graphed in Grafana](df-robot-sen0463-sensor.png)
+![The DF Robot Gravity Geiger Counter SEN0463 sensor](df-robot-sen0463-sensor.jpg)
 
 Related software:
 
@@ -48,10 +48,12 @@ radiation_nsvh 180
 radiation_usvh 0.18
 ```
 
+![The DF Robot Gravity Geiger Counter SEN0463 sensor output graphed in Grafana](dfrobot-sen0463-grafana.png)
+
 ## Licenses
 
 MIT License
 
 Copyright (c) 2010 DFRobot Co.Ltd
 
-Authors: [fengli](li.feng@dfrobot.com), [sighmon](sighmon@sighmon.com)
+Authors: [fengli](mailto:li.feng@dfrobot.com), [@sighmon](https://twitter.com/sighmon)
