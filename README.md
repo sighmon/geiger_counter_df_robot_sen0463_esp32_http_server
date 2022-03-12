@@ -10,12 +10,23 @@ Related software:
 
 * [Prometheus/Grafana Docker containers for Raspberry Pi](https://github.com/sighmon/prometheus-grafana-raspberry-pi)
 
+## Features
+
+* Reads the radiation sensor in a background task every 3 seconds
+* Posts the readings to [SafeCast](https://api.safecast.org) every 30 seconds (if an API key is present)
+
 ## Setup
 
 **WiFi**:
 
 * Copy the secrets file: `cp secrets.tmpl.h secrets.h`
 * Fill in your SSID and password in `secrets.h`
+
+**SafeCast**:
+
+* Sign up for an API key: api.safecast.org
+* Add your API key to `secrets.h`
+* Add your `latitude` and `longitude` to `secrets.h`
 
 **Arduino**:
 

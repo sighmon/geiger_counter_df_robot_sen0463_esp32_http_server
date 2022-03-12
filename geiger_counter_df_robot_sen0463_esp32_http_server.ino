@@ -16,7 +16,9 @@
 // Task scheduler
 #include <TaskScheduler.h>
 void readSensorCallback();
-Task readSensorTask(3000, -1, &readSensorCallback);
+void sendDataToSafecastCallback();
+Task readSensorTask(3000, -1, &readSensorCallback);  // Read sensor every 3 seconds
+Task sendDataToSafecastTask(30000, -1, &sendDataToSafecastCallback);  // Send to SafeCast every 30 seconds
 Scheduler runner;
 
 // DF Robot sensor init
@@ -37,10 +39,18 @@ float usvh;
 
 // WiFi init
 #include <WiFi.h>
+#include <HTTPClient.h>
 const char* ssid     = SECRET_SSID;
 const char* password = SECRET_PASSWORD;
 
 WiFiServer server(80);
+HTTPClient http;
+
+// NTP time
+#include <NTPClient.h>
+#include <WiFiUdp.h>
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP);
 
 // Task callback
 void readSensorCallback() {
@@ -51,6 +61,26 @@ void readSensorCallback() {
   nsvh = geiger.getnSvh();
   //Get the current μSv/h, if it has been suspended, μSv/h is the last value before the suspension
   usvh = geiger.getuSvh();
+}
+
+void sendDataToSafecastCallback() {
+  if (SAFECAST_API_KEY != "") {
+    http.begin(SAFECAST_API_URL + (String)"?api_key=" + SAFECAST_API_KEY);
+    http.addHeader("Content-Type", "application/json");
+    // JSON data to send with HTTP POST
+    while(!timeClient.update()) {
+      timeClient.forceUpdate();
+    }
+    String timestamp = timeClient.getFormattedTime();
+    String httpRequestData = (String)"{\"longitude\":\"" + SAFECAST_DEVICE_LONGITUDE + (String)"\",\"latitude\":\"" + SAFECAST_DEVICE_LATITUDE + (String)"\",\"device_id\":\"" + SAFECAST_DEVICE_ID + (String)"\",\"value\":\"" + cpm + (String)"\",\"unit\":\"cpm\",\"captured_at\":\"" + timestamp + (String)"\"}";
+    // Send HTTP POST request
+    int httpResponseCode = http.POST(httpRequestData);
+    Serial.print("HTTP Response code from SafeCast: ");
+    Serial.println(httpResponseCode);
+    http.end();
+  } else {
+    Serial.println("Sign up for a SafeCast API Key at https://api.safecast.org");
+  }
 }
 
 void setup() {
@@ -83,7 +113,13 @@ void setup() {
   // Setup tasks
   readSensorTask.enable();
   runner.addTask(readSensorTask);
+  sendDataToSafecastTask.enable();
+  runner.addTask(sendDataToSafecastTask);
   runner.enableAll();
+
+  // Setup NTP time
+  timeClient.begin();
+  timeClient.setTimeOffset(0);  // GMT
 }
 
 void loop() {
