@@ -1,4 +1,4 @@
-# DF Robot DF Robot Gravity Geiger Counter SEN0463 radiation sensor for ESP32
+# DF Robot Gravity Geiger Counter SEN0463 radiation sensor for ESP32
 
 An Arduino sketch for the [DF Robot Gravity Geiger Counter SEN0463 sensor](https://wiki.dfrobot.com/SKU_SEN0463_Gravity_Geiger_Counter_Module) running on an ESP32 with an http server returning [Prometheus](https://prometheus.io) compatible responses.
 
