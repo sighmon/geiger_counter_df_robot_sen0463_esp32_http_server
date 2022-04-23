@@ -13,7 +13,7 @@ Related software:
 ## Features
 
 * Reads the radiation sensor in a background task every 3 seconds
-* Posts the readings to [SafeCast](https://api.safecast.org) every 30 seconds (if an API key is present)
+* Posts the readings to [SafeCast](https://api.safecast.org) every 5 minutes (if an API key is present)
 
 ## Setup
 

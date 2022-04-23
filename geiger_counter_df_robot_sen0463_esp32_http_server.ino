@@ -18,7 +18,7 @@
 void readSensorCallback();
 void sendDataToSafecastCallback();
 Task readSensorTask(3000, -1, &readSensorCallback);  // Read sensor every 3 seconds
-Task sendDataToSafecastTask(30000, -1, &sendDataToSafecastCallback);  // Send to SafeCast every 30 seconds
+Task sendDataToSafecastTask(300000, -1, &sendDataToSafecastCallback);  // Send to SafeCast every 300 seconds (5 minutes)
 Scheduler runner;
 
 // DF Robot sensor init
@@ -72,7 +72,7 @@ void sendDataToSafecastCallback() {
       timeClient.forceUpdate();
     }
     String timestamp = timeClient.getFormattedTime();
-    String httpRequestData = (String)"{\"longitude\":\"" + SAFECAST_DEVICE_LONGITUDE + (String)"\",\"latitude\":\"" + SAFECAST_DEVICE_LATITUDE + (String)"\",\"device_id\":\"" + SAFECAST_DEVICE_ID + (String)"\",\"value\":\"" + cpm + (String)"\",\"unit\":\"cpm\",\"captured_at\":\"" + timestamp + (String)"\"}";
+    String httpRequestData = (String)"{\"longitude\":\"" + SAFECAST_DEVICE_LONGITUDE + (String)"\",\"latitude\":\"" + SAFECAST_DEVICE_LATITUDE + (String)"\",\"device_id\":\"" + SAFECAST_DEVICE_ID + (String)"\",\"value\":\"" + usvh + (String)"\",\"unit\":\"usv\",\"captured_at\":\"" + timestamp + (String)"\"}";
     // Send HTTP POST request
     int httpResponseCode = http.POST(httpRequestData);
     Serial.print("HTTP Response code from SafeCast: ");
@@ -142,7 +142,7 @@ void loop() {
             // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
             // and a content-type so the client knows what's coming, then a blank line:
             client.println("HTTP/1.1 200 OK");
-            client.println("Content-type:text/html");
+            client.println("Content-type:text/html; charset=UTF-8");
             client.println();
 
             // Print sensor readings
