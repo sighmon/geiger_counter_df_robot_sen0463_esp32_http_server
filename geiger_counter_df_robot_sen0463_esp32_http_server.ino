@@ -68,9 +68,6 @@ void sendDataToSafecastCallback() {
     http.begin(SAFECAST_API_URL + (String)"?api_key=" + SAFECAST_API_KEY);
     http.addHeader("Content-Type", "application/json");
     // JSON data to send with HTTP POST
-    while(!timeClient.update()) {
-      timeClient.forceUpdate();
-    }
     String timestamp = timeClient.getFormattedTime();
     String httpRequestData = (String)"{\"longitude\":\"" + SAFECAST_DEVICE_LONGITUDE + (String)"\",\"latitude\":\"" + SAFECAST_DEVICE_LATITUDE + (String)"\",\"device_id\":\"" + SAFECAST_DEVICE_ID + (String)"\",\"value\":\"" + usvh + (String)"\",\"unit\":\"usv\",\"captured_at\":\"" + timestamp + (String)"\"}";
     // Send HTTP POST request
@@ -120,6 +117,9 @@ void setup() {
   // Setup NTP time
   timeClient.begin();
   timeClient.setTimeOffset(0);  // GMT
+  while(!timeClient.update()) {
+    timeClient.forceUpdate();
+  }
 }
 
 void loop() {
